@@ -1,8 +1,9 @@
 import { useFetch } from '@vueuse/core';
 
-const API_URL: URL = import.meta.env.VITE_API_BASE_URL;
+// @ts-ignore
+const API_URL = config.VITE_API_BASE_URL;
 
-export function useApi() {
+export function useApi(): { fetchApi: <T>(url: string) => Promise<T>; } {
   return {
     fetchApi: async <T>(url: string): Promise<T> => {
       const { data, error } = await useFetch(new URL(url, API_URL).toString()).json<T>();
