@@ -1,0 +1,34 @@
+name: onPushToMaster Actions
+run-name: ${{ github.actor }} is building the repo ${{ github.repository }} 🏗️
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+      - name: Install the dependancies
+        run: npm ci
+      - name: Linting the code
+        run: npm run lint
+      - name: Running tests
+        run: npm run test
+      - name: Initialize Git user
+        run: |
+          git config --global user.email "releaseit@flts.eu"
+          git config --global user.name "Release Workflow"
+      - name: Run release
+        run: npm run release --ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
