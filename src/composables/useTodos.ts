@@ -8,8 +8,8 @@ interface Todo {
 };
 
 const { fetchApi } = useApi();
-
-const TODOS_URL: string = import.meta.env.VITE_API_TODOS_PATH;
+// @ts-ignore
+const TODOS_URL: string = config.VITE_API_TODOS_PATH;
 
 export function useTodos() {
   const todos = ref<Todo[]>([]);
